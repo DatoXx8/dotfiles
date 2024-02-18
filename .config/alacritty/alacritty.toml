@@ -1,0 +1,5 @@
+import = ["/home/gamer/.config/alacritty/rose-pine.toml"]
+
+[font.normal]
+family = "HackNerdFont"
+style = "Regular"
