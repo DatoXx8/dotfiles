@@ -48,8 +48,17 @@ vim.opt.rtp:prepend(lazypath)
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
     require('lazy').setup({
 
-        'tpope/vim-fugitive',
-        'tpope/vim-rhubarb',
+        {
+            "NeogitOrg/neogit",
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                "sindrets/diffview.nvim",
+
+                "nvim-telescope/telescope.nvim",
+            },
+            config = true,
+            vim.keymap.set('n', '<leader>g', vim.cmd.Neogit),
+        },
 
         {
             'neovim/nvim-lspconfig',
@@ -107,7 +116,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         {
             'nvim-treesitter/nvim-treesitter',
             dependencies = {
-                'nvim-treesitter/nvim-treesitter-textobjects',
+                -- 'nvim-treesitter/nvim-treesitter-textobjects',
             },
             build = ':TSUpdate',
         },
@@ -198,16 +207,12 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
     vim.keymap.set('n', '<C-i>', vim.cmd.w, { desc = 'Save the current file' })
 
-    -- [[ Configure Treesitter ]]
-    -- See `:help nvim-treesitter`
     require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
-        ensure_installed = { "markdown", "markdown_inline", 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript',
-            'vimdoc', 'vim' },
+        ensure_installed = { "markdown", "markdown_inline", 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
         ignore_install = {},
         modules = {},
 
-        -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
         auto_install = true,
 
         highlight = {
@@ -224,50 +229,50 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
                 node_decremental = '<M-space>',
             },
         },
-        textobjects = {
-            select = {
-                enable = true,
-                lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-                keymaps = {
-                    -- You can use the capture groups defined in textobjects.scm
-                    ['aa'] = '@parameter.outer',
-                    ['ia'] = '@parameter.inner',
-                    ['af'] = '@function.outer',
-                    ['if'] = '@function.inner',
-                    ['ac'] = '@class.outer',
-                    ['ic'] = '@class.inner',
-                },
-            },
-            move = {
-                enable = true,
-                set_jumps = true, -- whether to set jumps in the jumplist
-                goto_next_start = {
-                    [']m'] = '@function.outer',
-                    [']]'] = '@class.outer',
-                },
-                goto_next_end = {
-                    [']M'] = '@function.outer',
-                    [']['] = '@class.outer',
-                },
-                goto_previous_start = {
-                    ['[m'] = '@function.outer',
-                    ['[['] = '@class.outer',
-                },
-                goto_previous_end = {
-                    ['[M'] = '@function.outer',
-                    ['[]'] = '@class.outer',
-                },
-            },
-            swap = {
-                enable = true,
-                swap_next = {
-                    ['<leader>a'] = '@parameter.inner',
-                },
-                swap_previous = {
-                    ['<leader>A'] = '@parameter.inner',
-                },
-            },
-        },
+        -- textobjects = {
+        --     select = {
+        --         enable = true,
+        --         lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+        --         keymaps = {
+        --             -- You can use the capture groups defined in textobjects.scm
+        --             ['aa'] = '@parameter.outer',
+        --             ['ia'] = '@parameter.inner',
+        --             ['af'] = '@function.outer',
+        --             ['if'] = '@function.inner',
+        --             ['ac'] = '@class.outer',
+        --             ['ic'] = '@class.inner',
+        --         },
+        --     },
+        --     move = {
+        --         enable = true,
+        --         set_jumps = true, -- whether to set jumps in the jumplist
+        --         goto_next_start = {
+        --             [']m'] = '@function.outer',
+        --             [']]'] = '@class.outer',
+        --         },
+        --         goto_next_end = {
+        --             [']M'] = '@function.outer',
+        --             [']['] = '@class.outer',
+        --         },
+        --         goto_previous_start = {
+        --             ['[m'] = '@function.outer',
+        --             ['[['] = '@class.outer',
+        --         },
+        --         goto_previous_end = {
+        --             ['[M'] = '@function.outer',
+        --             ['[]'] = '@class.outer',
+        --         },
+        --     },
+        --     swap = {
+        --         enable = true,
+        --         swap_next = {
+        --             ['<leader>a'] = '@parameter.inner',
+        --         },
+        --         swap_previous = {
+        --             ['<leader>A'] = '@parameter.inner',
+        --         },
+        --     },
+        -- },
     }
 
     -- Diagnostic keymaps
@@ -377,7 +382,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     -- See `:help cmp`
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
-    -- require('luasnip.loaders.from_vscode').lazy_load()
+    require('luasnip.loaders.from_vscode').lazy_load()
     luasnip.config.setup {}
 
     cmp.setup {
@@ -387,49 +392,17 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
             end,
         },
         mapping = cmp.mapping.preset.insert {
-            ['<C-n>'] = cmp.mapping.select_next_item(),
-            ['<C-p>'] = cmp.mapping.select_prev_item(),
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete {},
-            ['<CR>'] = cmp.mapping.confirm {
-                behavior = cmp.ConfirmBehavior.Replace,
+            ['<C-j>'] = cmp.mapping.select_next_item(),
+            ['<C-k>'] = cmp.mapping.select_prev_item(),
+            ['<C-y>'] = cmp.mapping.confirm {
                 select = true,
             },
-            ['<Tab>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.expand_or_locally_jumpable() then
-                    luasnip.expand_or_jump()
-                else
-                    fallback()
-                end
-            end, { 'i', 's' }),
-            ['<S-Tab>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.locally_jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { 'i', 's' }),
         },
         sources = {
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
         },
     }
-
-    require("obsidian").setup({
-        mappings = {
-            --["<leader>ogf"] = require("obsidian.mapping").gf_passthrough(),
-        },
-
-        vim.keymap.set("n", "<leader>of", vim.cmd.ObsidianFollowLink, { desc = 'Obsidian: Goto File' }),
-        vim.keymap.set("n", "<leader>bl", vim.cmd.ObsidianBacklinks, { desc = 'Obsidian: Backlinks' }),
-        vim.keymap.set("n", "<leader>fs", vim.cmd.ObsidianSearch, { desc = 'Obsidian: search' }),
-    })
 
     vim.keymap.set("n", "<leader>rw", vim.cmd.Ex, { desc = 'Open up NetRW' })
     -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
