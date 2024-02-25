@@ -1,23 +1,23 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = 'Scroll a half page down while keeping the cursor centered' })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = 'Scroll a half page up while keeping the cursor centered' })
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = 'Scroll a half page down while keeping the cursor centered' })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = 'Scroll a half page up while keeping the cursor centered' })
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
 
-vim.keymap.set("v", "<leader>a", "<C-a>gvj", { desc = "In visual mode increment the section and go down. Kinda janky but it works"})
-vim.keymap.set("n", "<leader>hs", vim.cmd.sp, { desc = 'Split the window horizontally' })
-vim.keymap.set("n", "<leader>vs", vim.cmd.vsp, { desc = 'Split the window vertically' })
+vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works'})
+vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
+vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
 
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
-vim.keymap.set("v", "J", ":m '>+1<CR>gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv")
+vim.keymap.set('n', '<C-h>', '<C-w>h')
+vim.keymap.set('n', '<C-j>', '<C-w>j')
+vim.keymap.set('n', '<C-k>', '<C-w>k')
+vim.keymap.set('n', '<C-l>', '<C-w>l')
+vim.keymap.set('v', 'J', ':m ">+1<CR>gv')
+vim.keymap.set('v', 'K', ':m "<-2<CR>gv')
 
 vim.opt.scrolloff = 10
 
@@ -49,12 +49,12 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     require('lazy').setup({
 
         {
-            "NeogitOrg/neogit",
+            'NeogitOrg/neogit',
             dependencies = {
-                "nvim-lua/plenary.nvim",
-                "sindrets/diffview.nvim",
+                'nvim-lua/plenary.nvim',
+                'sindrets/diffview.nvim',
 
-                "nvim-telescope/telescope.nvim",
+                'nvim-telescope/telescope.nvim',
             },
             config = true,
             vim.keymap.set('n', '<leader>g', vim.cmd.Neogit),
@@ -162,8 +162,8 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
     -- Remaps for dealing with word wrap
-    -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-    -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+    -- vim.keymap.set('n', 'j', 'v:count == 0 ? 'gj' : 'j'', { expr = true, silent = true })
+    -- vim.keymap.set('n', 'k', 'v:count == 0 ? 'gk' : 'k'', { expr = true, silent = true })
     -- Turn off word wrap
     -- vim.o.nowrap = true
 
@@ -209,7 +209,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
     require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
-        ensure_installed = { "markdown", "markdown_inline", 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
+        ensure_installed = { 'markdown', 'markdown_inline', 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
         ignore_install = {},
         modules = {},
 
@@ -217,7 +217,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
         highlight = {
             enable = true,
-            -- additional_vim_regex_highlighting = { "markdown" },
+            -- additional_vim_regex_highlighting = { 'markdown' },
         },
         indent = { enable = true },
         incremental_selection = {
@@ -299,7 +299,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         end
 
         nmap('<leader>rn', vim.lsp.buf.rename, 'Rename')
-        nmap('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
+        nmap('<leader>a', vim.lsp.buf.code_action, 'Code Action')
 
         nmap('gd', vim.lsp.buf.definition, 'Goto Definition')
         nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
@@ -404,19 +404,33 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         },
     }
 
-    vim.keymap.set("n", "<leader>rw", vim.cmd.Ex, { desc = 'Open up NetRW' })
-    -- vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-    -- vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+    vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
+    -- vim.keymap.set('v', 'J', ':m '>+1<CR>gv=gv')
+    -- vim.keymap.set('v', 'K', ':m '<-2<CR>gv=gv')
 
 
     vim.diagnostic.config({ update_on_insert = true })
 
-    require("rose-pine").setup({
+    require('rose-pine').setup({
         styles = {
             bold = false,
             italic = true,
             transparency = false,
         },
     })
-    vim.cmd("colorscheme rose-pine")
+    vim.cmd('colorscheme rose-pine')
+
+    Cmd = nil
+    vim.keymap.set('n', '<leader>c', function()
+        if Cmd ~= nil then
+            vim.cmd(Cmd)
+        else
+            Cmd = vim.fn.input("Your command: ")
+            vim.print("Bound command")
+        end
+    end)
+    vim.keymap.set('n', '<leader>x', function()
+        Cmd = nil
+        vim.print("Removed command")
+    end)
 end
