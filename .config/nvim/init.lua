@@ -16,8 +16,8 @@ vim.keymap.set('n', '<C-h>', '<C-w>h')
 vim.keymap.set('n', '<C-j>', '<C-w>j')
 vim.keymap.set('n', '<C-k>', '<C-w>k')
 vim.keymap.set('n', '<C-l>', '<C-w>l')
-vim.keymap.set('v', 'J', ':m ">+1<CR>gv')
-vim.keymap.set('v', 'K', ':m "<-2<CR>gv')
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
 
 vim.opt.scrolloff = 10
 
@@ -47,7 +47,6 @@ vim.opt.rtp:prepend(lazypath)
 
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
     require('lazy').setup({
-
         {
             'NeogitOrg/neogit',
             dependencies = {
@@ -83,18 +82,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
                 -- 'rafamadriz/friendly-snippets',
             },
         },
-
-        -- {
-        --     'nvim-lualine/lualine.nvim',
-        --     opts = {
-        --         options = {
-        --             icons_enabled = false,
-        --             component_separators = '|',
-        --             section_separators = '',
-        --         },
-        --     },
-        -- },
-
 
         { 'numToStr/Comment.nvim', opts = {} },
 
@@ -137,9 +124,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     vim.wo.number = true
     vim.wo.relativenumber = true
 
-    -- Sync clipboard between OS and Neovim.
-    --    Remove this option if you want your OS clipboard to remain independent.
-    --    See `:help 'clipboard'`
     vim.o.clipboard = 'unnamedplus'
 
     vim.o.breakindent = true
@@ -148,7 +132,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
     -- Case-insensitive searching UNLESS \C or capital in search
     vim.o.ignorecase = true
-    -- vim.o.smartcase = true
 
     vim.wo.signcolumn = 'yes'
 
@@ -208,7 +191,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     vim.keymap.set('n', '<C-i>', vim.cmd.w, { desc = 'Save the current file' })
 
     require('nvim-treesitter.configs').setup {
-        -- Add languages to be installed here that you want installed for treesitter
         ensure_installed = { 'markdown', 'markdown_inline', 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
         ignore_install = {},
         modules = {},
@@ -217,7 +199,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
         highlight = {
             enable = true,
-            -- additional_vim_regex_highlighting = { 'markdown' },
         },
         indent = { enable = true },
         incremental_selection = {
@@ -310,7 +291,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
         -- See `:help K` for why this keymap
         nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-        nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
         vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
 
         -- Lesser used LSP functionality

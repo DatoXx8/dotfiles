@@ -203,4 +203,4 @@ bar {
   }
 }
 
-exec feh
+exec --no-startup-id nitrogen --restore
