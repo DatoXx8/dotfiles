@@ -1,9 +1,7 @@
 return {
     "folke/trouble.nvim",
-    opts = {
-        icons = false
-    },
-    config = function()
+    config = {
+        icons = false,
         vim.keymap.set('n', '<leader>t', vim.cmd.TroubleToggle)
-    end
+    },
 }
