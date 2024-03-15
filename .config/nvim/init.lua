@@ -1,95 +1,89 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
-
-vim.keymap.set('v', '<leader>a', '<C-a>gvj',
-    { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
+vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
 vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
 vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
-
 vim.keymap.set('n', '<C-h>', '<C-w>h')
 vim.keymap.set('n', '<C-j>', '<C-w>j')
 vim.keymap.set('n', '<C-k>', '<C-w>k')
 vim.keymap.set('n', '<C-l>', '<C-w>l')
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
-
+vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
+vim.o.hlsearch = false
+vim.o.mouse = nil
+vim.o.expandtab = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.wo.number = true
+vim.wo.relativenumber = true
+vim.o.clipboard = 'unnamedplus'
+vim.o.breakindent = true
+vim.o.undofile = true
+-- Case-insensitive searching UNLESS \C or capital in search
+vim.o.ignorecase = true
+vim.wo.signcolumn = 'yes'
+vim.o.updatetime = 100
+vim.o.timeoutlen = 250
+vim.o.completeopt = 'menuone,noselect'
+vim.o.termguicolors = true
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.opt.scrolloff = 10
-
--- Install package manager
---        https://github.com/folke/lazy.nvim
---        `:help lazy.nvim.txt` for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system {
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
-        lazypath,
-    }
-end
-vim.opt.rtp:prepend(lazypath)
+vim.diagnostic.config({ update_on_insert = true })
+Cmd = nil
+vim.keymap.set('n', '<leader>c', function()
+    if Cmd ~= nil then
+        vim.cmd(Cmd)
+    else
+        Cmd = vim.fn.input("Your command: ")
+        vim.print("Bound command")
+    end
+end)
+vim.keymap.set('n', '<leader>x', function()
+    Cmd = nil
+    vim.print("Removed command")
+end)
+-- Remaps for dealing with word wrap
+-- vim.keymap.set('n', 'j', 'v:count == 0 ? 'gj' : 'j'', { expr = true, silent = true })
+-- vim.keymap.set('n', 'k', 'v:count == 0 ? 'gk' : 'k'', { expr = true, silent = true })
+-- Turn off word wrap
+-- vim.o.nowrap = true
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+    group = highlight_group,
+    pattern = '*',
+})
 
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
+    -- Install package manager
+    --        https://github.com/folke/lazy.nvim
+    --        `:help lazy.nvim.txt` for more info
+    local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+    if not vim.loop.fs_stat(lazypath) then
+        vim.fn.system {
+            'git',
+            'clone',
+            '--filter=blob:none',
+            'https://github.com/folke/lazy.nvim.git',
+            '--branch=stable', -- latest stable release
+            lazypath,
+        }
+    end
+    vim.opt.rtp:prepend(lazypath)
     require('lazy').setup({
         {
             import = 'custom.plugins'
         },
     }, {})
-
-    vim.o.hlsearch = false
-
-    vim.o.mouse = nil
-
-    vim.o.expandtab = true
-    vim.o.tabstop = 4
-    vim.o.shiftwidth = 4
-
-    vim.wo.number = true
-    vim.wo.relativenumber = true
-
-    vim.o.clipboard = 'unnamedplus'
-
-    vim.o.breakindent = true
-
-    vim.o.undofile = true
-
-    -- Case-insensitive searching UNLESS \C or capital in search
-    vim.o.ignorecase = true
-
-    vim.wo.signcolumn = 'yes'
-
-    vim.o.updatetime = 100
-    vim.o.timeoutlen = 250
-
-    vim.o.completeopt = 'menuone,noselect'
-
-    vim.o.termguicolors = true
-
-    vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
-    -- Remaps for dealing with word wrap
-    -- vim.keymap.set('n', 'j', 'v:count == 0 ? 'gj' : 'j'', { expr = true, silent = true })
-    -- vim.keymap.set('n', 'k', 'v:count == 0 ? 'gk' : 'k'', { expr = true, silent = true })
-    -- Turn off word wrap
-    -- vim.o.nowrap = true
-
-    local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-    vim.api.nvim_create_autocmd('TextYankPost', {
-        callback = function()
-            vim.highlight.on_yank()
-        end,
-        group = highlight_group,
-        pattern = '*',
-    })
 
     require('telescope').setup {
         defaults = {
@@ -122,28 +116,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
 
     vim.keymap.set('n', '<C-i>', vim.cmd.w, { desc = 'Save the current file' })
 
-    require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'markdown', 'markdown_inline', 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
-        ignore_install = {},
-        modules = {},
-        sync_install = false,
-
-        auto_install = true,
-
-        highlight = {
-            enable = true,
-        },
-        indent = { enable = true },
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = '<c-space>',
-                node_incremental = '<c-space>',
-                scope_incremental = '<c-s>',
-                node_decremental = '<M-space>',
-            },
-        },
-    }
 
     -- Diagnostic keymaps
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -206,14 +178,9 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     --    define the property 'filetypes' to the map in question.
     local servers = {
         clangd = {},
-        -- gopls = {},
         pyright = {},
-        opencl_ls = {
-        },
+        opencl_ls = {},
         rust_analyzer = {},
-        -- tsserver = {},
-        -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
         lua_ls = {
             Lua = {
                 workspace = { checkThirdParty = false },
@@ -222,14 +189,11 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         },
     }
 
-    -- Setup neovim lua configuration
     require('neodev').setup()
 
-    -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-    -- Ensure the servers above are installed
     local mason_lspconfig = require 'mason-lspconfig'
 
     mason_lspconfig.setup {
@@ -247,59 +211,4 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         end,
     }
 
-    -- [[ Configure nvim-cmp ]]
-    -- See `:help cmp`
-    local cmp = require 'cmp'
-    local luasnip = require 'luasnip'
-    require('luasnip.loaders.from_vscode').lazy_load()
-    luasnip.config.setup {}
-
-    cmp.setup {
-        snippet = {
-            expand = function(args)
-                luasnip.lsp_expand(args.body)
-            end,
-        },
-        mapping = cmp.mapping.preset.insert {
-            ['<C-j>'] = cmp.mapping.select_next_item(),
-            ['<C-k>'] = cmp.mapping.select_prev_item(),
-            ['<C-y>'] = cmp.mapping.confirm {
-                select = true,
-            },
-        },
-        sources = {
-            { name = 'nvim_lsp' },
-            { name = 'luasnip' },
-        },
-    }
-
-    vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
-    -- vim.keymap.set('v', 'J', ':m '>+1<CR>gv=gv')
-    -- vim.keymap.set('v', 'K', ':m '<-2<CR>gv=gv')
-
-
-    vim.diagnostic.config({ update_on_insert = true })
-
-    require('rose-pine').setup({
-        styles = {
-            bold = false,
-            italic = true,
-            transparency = false,
-        },
-    })
-    vim.cmd('colorscheme rose-pine')
-
-    Cmd = nil
-    vim.keymap.set('n', '<leader>c', function()
-        if Cmd ~= nil then
-            vim.cmd(Cmd)
-        else
-            Cmd = vim.fn.input("Your command: ")
-            vim.print("Bound command")
-        end
-    end)
-    vim.keymap.set('n', '<leader>x', function()
-        Cmd = nil
-        vim.print("Removed command")
-    end)
 end
