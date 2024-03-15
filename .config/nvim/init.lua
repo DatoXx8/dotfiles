@@ -4,18 +4,20 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while 
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
-vim.keymap.set('n', 'n', 'nzzzv')
-vim.keymap.set('n', 'N', 'Nzzzv')
+vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Move to the next and re-center'})
+vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Move to the previous and re-center'})
 vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
 vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
 vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
-vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
-vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to the split on the left'})
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to the split on the bottom'})
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to the split on the top'})
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to the split on the right'})
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent'})
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent'})
 vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
+vim.keymap.set('v', '<leader>y', '\"*y', { desc = 'Yank to system clipboard'})
+vim.keymap.set('n', '<leader>p', '\"*p', { desc = 'Paste from system clipboard'})
 vim.o.hlsearch = false
 vim.o.mouse = nil
 vim.o.expandtab = true
@@ -23,7 +25,6 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.wo.number = true
 vim.wo.relativenumber = true
-vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or capital in search
