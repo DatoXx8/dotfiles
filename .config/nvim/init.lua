@@ -8,7 +8,8 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while ke
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
-vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works'})
+vim.keymap.set('v', '<leader>a', '<C-a>gvj',
+    { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
 vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
 vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
 
@@ -20,14 +21,6 @@ vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv')
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv')
 
 vim.opt.scrolloff = 10
-
-if vim.g.neovide then
-    vim.g.neovide_refresh_rate = 144
-    vim.g.neovide_refresh_rate_idle = 1
-    vim.g.neovide_cursor_animation_length = 0
-    vim.g.neovide_scroll_animation_length = 0
-    vim.g.neovide_cursor_antialiasing = true
-end
 
 -- Install package manager
 --        https://github.com/folke/lazy.nvim
@@ -48,69 +41,8 @@ vim.opt.rtp:prepend(lazypath)
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
     require('lazy').setup({
         {
-            'NeogitOrg/neogit',
-            dependencies = {
-                'nvim-lua/plenary.nvim',
-                'sindrets/diffview.nvim',
-
-                'nvim-telescope/telescope.nvim',
-            },
-            config = true,
-            vim.keymap.set('n', '<leader>g', vim.cmd.Neogit),
+            import = 'custom.plugins'
         },
-
-        {
-            'neovim/nvim-lspconfig',
-            dependencies = {
-                {'williamboman/mason.nvim',
-                    config = true
-                },
-
-                'folke/neodev.nvim',
-
-                'williamboman/mason-lspconfig.nvim',
-            },
-        },
-        {
-            'hrsh7th/nvim-cmp',
-            dependencies = {
-                'L3MON4D3/LuaSnip',
-                'saadparwaiz1/cmp_luasnip',
-
-                'hrsh7th/cmp-nvim-lsp',
-
-                -- 'rafamadriz/friendly-snippets',
-            },
-        },
-
-        { 'numToStr/Comment.nvim', opts = {} },
-
-        {
-            'nvim-telescope/telescope.nvim',
-            branch = '0.1.x',
-            dependencies = {
-                'nvim-lua/plenary.nvim',
-                {
-                    'nvim-telescope/telescope-fzf-native.nvim',
-                    build = 'make',
-                    cond = function()
-                        return vim.fn.executable 'make' == 1
-                    end,
-                },
-            },
-        },
-
-        {
-            'nvim-treesitter/nvim-treesitter',
-            dependencies = {
-                -- 'nvim-treesitter/nvim-treesitter-textobjects',
-            },
-            build = ':TSUpdate',
-        },
-
-        require 'kickstart.plugins.debug',
-
-        { import = 'custom.plugins' },
     }, {})
 
     vim.o.hlsearch = false
@@ -194,6 +126,7 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
         ensure_installed = { 'markdown', 'markdown_inline', 'c', 'lua', 'python', 'rust', 'vimdoc', 'vim' },
         ignore_install = {},
         modules = {},
+        sync_install = false,
 
         auto_install = true,
 
@@ -210,50 +143,6 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
                 node_decremental = '<M-space>',
             },
         },
-        -- textobjects = {
-        --     select = {
-        --         enable = true,
-        --         lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-        --         keymaps = {
-        --             -- You can use the capture groups defined in textobjects.scm
-        --             ['aa'] = '@parameter.outer',
-        --             ['ia'] = '@parameter.inner',
-        --             ['af'] = '@function.outer',
-        --             ['if'] = '@function.inner',
-        --             ['ac'] = '@class.outer',
-        --             ['ic'] = '@class.inner',
-        --         },
-        --     },
-        --     move = {
-        --         enable = true,
-        --         set_jumps = true, -- whether to set jumps in the jumplist
-        --         goto_next_start = {
-        --             [']m'] = '@function.outer',
-        --             [']]'] = '@class.outer',
-        --         },
-        --         goto_next_end = {
-        --             [']M'] = '@function.outer',
-        --             [']['] = '@class.outer',
-        --         },
-        --         goto_previous_start = {
-        --             ['[m'] = '@function.outer',
-        --             ['[['] = '@class.outer',
-        --         },
-        --         goto_previous_end = {
-        --             ['[M'] = '@function.outer',
-        --             ['[]'] = '@class.outer',
-        --         },
-        --     },
-        --     swap = {
-        --         enable = true,
-        --         swap_next = {
-        --             ['<leader>a'] = '@parameter.inner',
-        --         },
-        --         swap_previous = {
-        --             ['<leader>A'] = '@parameter.inner',
-        --         },
-        --     },
-        -- },
     }
 
     -- Diagnostic keymaps
