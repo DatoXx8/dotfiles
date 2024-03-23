@@ -38,7 +38,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.opt.scrolloff = 10
 vim.diagnostic.config({ update_on_insert = true })
 Cmd = nil
-vim.keymap.set('n', '<leader>c', function()
+vim.keymap.set('n', '<F2>', function()
     if Cmd ~= nil then
         vim.cmd(Cmd)
     else
@@ -46,7 +46,7 @@ vim.keymap.set('n', '<leader>c', function()
         vim.print("Bound command")
     end
 end)
-vim.keymap.set('n', '<leader>x', function()
+vim.keymap.set('n', '<F3>', function()
     Cmd = nil
     vim.print("Removed command")
 end)
