@@ -8,6 +8,10 @@ return {
             'nvim-telescope/telescope.nvim',
         },
         config = true,
-        vim.keymap.set('n', '<leader>g', vim.cmd.Neogit),
+        opts = {
+        },
+        vim.keymap.set('n', '<leader>g', function ()
+            require('neogit').open({ kind = 'replace' })
+        end),
     },
 }
