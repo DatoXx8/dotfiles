@@ -51,8 +51,8 @@ vim.keymap.set('n', '<F3>', function()
     vim.print("Removed command")
 end)
 -- Remaps for dealing with word wrap
--- vim.keymap.set('n', 'j', 'v:count == 0 ? 'gj' : 'j'', { expr = true, silent = true })
--- vim.keymap.set('n', 'k', 'v:count == 0 ? 'gk' : 'k'', { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- Turn off word wrap
 -- vim.o.nowrap = true
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
