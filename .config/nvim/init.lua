@@ -16,8 +16,8 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to the split on the right'
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent'})
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent'})
 vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
-vim.keymap.set('v', '<leader>y', '\"*y', { desc = 'Yank to system clipboard'})
-vim.keymap.set('n', '<leader>p', '\"*p', { desc = 'Paste from system clipboard'})
+vim.keymap.set('v', '<leader>y', '\"+y', { desc = 'Yank to system clipboard'})
+vim.keymap.set('n', '<leader>p', '\"+p', { desc = 'Paste from system clipboard'})
 vim.o.hlsearch = false
 vim.o.mouse = nil
 vim.o.expandtab = true
