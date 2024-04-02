@@ -9,10 +9,6 @@ vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Move to the previous and re-center'}
 vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
 vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
 vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
-vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to the split on the left'})
-vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to the split on the bottom'})
-vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to the split on the top'})
-vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to the split on the right'})
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent'})
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent'})
 vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
@@ -21,6 +17,7 @@ vim.keymap.set('n', '<leader>p', '\"+p', { desc = 'Paste from system clipboard'}
 vim.o.hlsearch = false
 vim.o.mouse = nil
 vim.o.expandtab = true
+vim.o.showmode = false
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.wo.number = true
