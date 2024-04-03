@@ -4,16 +4,17 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while 
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll a half page down while keeping the cursor centered' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll a half page up while keeping the cursor centered' })
-vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Move to the next and re-center'})
-vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Move to the previous and re-center'})
-vim.keymap.set('v', '<leader>a', '<C-a>gvj', { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
+vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Move to the next and re-center' })
+vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Move to the previous and re-center' })
+vim.keymap.set('v', '<leader>a', '<C-a>gvj',
+    { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
 vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
 vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
-vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent'})
-vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent'})
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent' })
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent' })
 vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
-vim.keymap.set('v', '<leader>y', '\"+y', { desc = 'Yank to system clipboard'})
-vim.keymap.set('n', '<leader>p', '\"+p', { desc = 'Paste from system clipboard'})
+vim.keymap.set('v', '<leader>y', '\"+y', { desc = 'Yank to system clipboard' })
+vim.keymap.set('n', '<leader>p', '\"+p', { desc = 'Paste from system clipboard' })
 vim.o.hlsearch = false
 vim.o.mouse = nil
 vim.o.expandtab = true
@@ -62,9 +63,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
-    -- Install package manager
-    --        https://github.com/folke/lazy.nvim
-    --        `:help lazy.nvim.txt` for more info
     local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
     if not vim.loop.fs_stat(lazypath) then
         vim.fn.system {
@@ -120,93 +118,97 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
     vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
     vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+    vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename' })
+    vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
 
-    -- [[ Configure LSP ]]
-    --    This function gets run when an LSP connects to a particular buffer.
-    local on_attach = function(_, bufnr)
-        -- NOTE: Remember that lua is a real programming language, and as such it is possible
-        -- to define small helper and utility functions so you don't have to repeat yourself
-        -- many times.
-        --
-        -- In this case, we create a function that lets us more easily define mappings specific
-        -- for LSP related items. It sets the mode, buffer and description for us each time.
-        local nmap = function(keys, func, desc)
-            if desc then
-                desc = 'LSP: ' .. desc
-            end
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
+    vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Goto References' })
+    vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { desc = 'Goto Implementation' })
+    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { desc = 'Type Definition' })
+    vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { desc = 'Document Symbols' })
+    vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols,
+        { desc = 'Workspace Symbols' })
 
-            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-        end
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+    vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help)
 
-        nmap('<leader>rn', vim.lsp.buf.rename, 'Rename')
-        nmap('<leader>a', vim.lsp.buf.code_action, 'Code Action')
-
-        nmap('gd', vim.lsp.buf.definition, 'Goto Definition')
-        nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
-        nmap('gI', vim.lsp.buf.implementation, 'Goto Implementation')
-        nmap('<leader>D', vim.lsp.buf.type_definition, 'Type Definition')
-        nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
-        nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
-
-        -- See `:help K` for why this keymap
-        nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-        vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
-
-        -- Lesser used LSP functionality
-        nmap('gD', vim.lsp.buf.declaration, 'Goto Declaration')
-        nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, 'Workspace Add Folder')
-        nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, 'Workspace Remove Folder')
-        nmap('<leader>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, 'Workspace List Folders')
-
-        -- Create a command `:Format` local to the LSP buffer
-        vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-            vim.lsp.buf.format()
-        end, { desc = 'Format current buffer with LSP' })
-    end
-
-    -- Enable the following language servers
-    --    Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-    --
-    --    Add any additional override configuration in the following tables. They will be passed to
-    --    the `settings` field of the server config. You must look up that documentation yourself.
-    --
-    --    If you want to override the default filetypes that your language server will attach to you can
-    --    define the property 'filetypes' to the map in question.
-    local servers = {
-        clangd = {},
-        pyright = {},
-        opencl_ls = {},
-        rust_analyzer = {},
-        lua_ls = {
-            Lua = {
-                workspace = { checkThirdParty = false },
-                telemetry = { enable = false },
-            },
-        },
-    }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Goto Declaration' })
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { desc = 'Workspace Add Folder' })
+    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { desc = 'Workspace Remove Folder' })
+    vim.keymap.set('n', '<leader>wl', function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, { desc = 'Workspace List Folders' })
 
     require('neodev').setup()
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-    local mason_lspconfig = require 'mason-lspconfig'
-
-    mason_lspconfig.setup {
-        ensure_installed = vim.tbl_keys(servers),
-    }
-
-    mason_lspconfig.setup_handlers {
-        function(server_name)
-            require('lspconfig')[server_name].setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-                settings = servers[server_name],
-                filetypes = (servers[server_name] or {}).filetypes,
-            }
-        end,
-    }
-
+    -- pyright, rust_analyzer, lua_ls, clangd
+    require('lspconfig').lua_ls.setup({ capabilities = capabilities })
+    require('lspconfig').clangd.setup({
+        capabilities = capabilities,
+        settings = {}
+    })
+    require('lspconfig').rust_analyzer.setup({ capabilities = capabilities })
+    require('lspconfig').pyright.setup({ capabilities = capabilities })
 end
+-- [[ Configure LSP ]]
+--    This function gets run when an LSP connects to a particular buffer.
+-- local on_attach = function(_, bufnr)
+--
+--     -- In this case, we create a function that lets us more easily define mappings specific
+--     -- for LSP related items. It sets the mode, buffer and description for us each time.
+--     local nmap = function(keys, func, desc)
+--         if desc then
+--             desc = 'LSP: ' .. desc
+--         end
+--
+--         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+--     end
+--
+--     nmap('<leader>rn', vim.lsp.buf.rename, 'Rename')
+--     nmap('<leader>a', vim.lsp.buf.code_action, 'Code Action')
+--
+--     nmap('gd', vim.lsp.buf.definition, 'Goto Definition')
+--     nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
+--     nmap('gI', vim.lsp.buf.implementation, 'Goto Implementation')
+--     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type Definition')
+--     nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
+--     nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
+--
+--     -- See `:help K` for why this keymap
+--     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+--     vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
+--
+--     -- Lesser used LSP functionality
+--     nmap('gD', vim.lsp.buf.declaration, 'Goto Declaration')
+--     nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, 'Workspace Add Folder')
+--     nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, 'Workspace Remove Folder')
+--     nmap('<leader>wl', function()
+--         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--     end, 'Workspace List Folders')
+--
+--     -- Create a command `:Format` local to the LSP buffer
+--     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+--         vim.lsp.buf.format()
+--     end, { desc = 'Format current buffer with LSP' })
+-- end
+
+-- local mason_lspconfig = require 'mason-lspconfig'
+--
+-- mason_lspconfig.setup {
+--     ensure_installed = vim.tbl_keys(servers),
+-- }
+--
+-- mason_lspconfig.setup_handlers {
+--     function(server_name)
+--         require('lspconfig')[server_name].setup {
+--             capabilities = capabilities,
+--             on_attach = on_attach,
+--             settings = servers[server_name],
+--             filetypes = (servers[server_name] or {}).filetypes,
+--         }
+--     end,
+-- }
