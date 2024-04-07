@@ -30,8 +30,7 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
+# NetworkManager is the most popular way to manage wireless networks on Linux, and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
@@ -100,8 +99,6 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -180,12 +177,13 @@ set $highlightmed   #403d52
 set $highlighthigh  #524f67
 
 # Teming border and Windows --------------
-# target                 title     bg    text   indicator  border
-client.focused           $rose     $base $text  $rose      $rose
-client.focused_inactive  $text     $base $text  $subtle    $surface
-client.unfocused         $text     $base $text  $overlay   $overlay
-client.urgent            $text     $base $text  $love      $love
-client.placeholder       $base     $base $text  $overlay   $overlay
+# target                 title    bg       text  indicator border
+# client.focused           $overlay $overlay $text $base     $base 
+client.focused           $base    $base    $gold $gold     $base 
+client.focused_inactive  $base    $base    $text $base     $base
+client.unfocused         $base    $base    $text $base     $base
+client.urgent            $base    $base    $text $rose     $rose
+client.placeholder       $base    $base    $text $base     $base
 client.background        $base
 
 bar {
@@ -193,13 +191,13 @@ bar {
         colors {
             background $base
                 statusline $text
-                separator  $overlay
+                separator  $base
 
-                focused_workspace  $highlighthigh $highlighthigh #F8F8F2
-                active_workspace   $overlay #44475A #F8F8F2
-                inactive_workspace $overlay $overlay $muted
-                urgent_workspace   $love $love #F8F8F2
-                binding_mode       $love $love #F8F8F2
+                focused_workspace  $highlighthigh $highlighthigh $text 
+                active_workspace   $highlightmed  $highlightmed  $text
+                inactive_workspace $highlightlow  $highlightlow  $text
+                urgent_workspace   $love          $love          $text
+                binding_mode       $pine          $pine          $text
         }
 }
 

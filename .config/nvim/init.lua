@@ -52,7 +52,6 @@ end)
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- Turn off word wrap
--- vim.o.nowrap = true
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function()
@@ -60,6 +59,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
     group = highlight_group,
     pattern = '*',
+})
+vim.filetype.add({
+    extension = {
+        cl = 'opencl'
+    }
 })
 
 if not vim.g.vscode then -- I have to use vscode for opencl :^(
@@ -93,6 +97,8 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     }
 
     pcall(require('telescope').load_extension, 'fzf')
+
+    vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Call LSP formating' })
 
     vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'Find recently opened files' })
     vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
@@ -149,7 +155,8 @@ if not vim.g.vscode then -- I have to use vscode for opencl :^(
     require('lspconfig').lua_ls.setup({ capabilities = capabilities })
     require('lspconfig').clangd.setup({
         capabilities = capabilities,
-        settings = {}
+        settings = {
+        }
     })
     require('lspconfig').rust_analyzer.setup({ capabilities = capabilities })
     require('lspconfig').pyright.setup({ capabilities = capabilities })
