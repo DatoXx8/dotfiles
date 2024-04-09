@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 vim.filetype.add({
     extension = {
-        cl = 'opencl'
+        cl = 'c'
     }
 })
 
