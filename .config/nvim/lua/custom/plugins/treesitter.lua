@@ -3,6 +3,11 @@ return {
         'nvim-treesitter/nvim-treesitter',
         dependencies = {
             -- 'nvim-treesitter/nvim-treesitter-textobjects',
+            -- 'nvim-treesitter/nvim-treesitter-context'
+            -- 'nvim-treesitter/nvim-treesitter-refactor'
+            -- 'nvim-treesitter/nvim-treesitter-docs'
+            -- 'nvim-treesitter/playground'
+            'nvim-treesitter/completion-treesitter'
         },
         build = ':TSUpdate',
         config = function()

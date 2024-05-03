@@ -11,26 +11,27 @@ return {
                 -- signs = false, -- configure signs for some keywords individually
             },
             TODO = { icon = " ", color = "info" },
-            HACK = { icon = " ", color = "warning" },
+            HACK = { icon = " ", color = "hack" },
             WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
             PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
             NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
             TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
         },
         gui_style = {
-            fg = "NONE", -- The gui style to use for the fg highlight group.
-            bg = "NONE", -- The gui style to use for the bg highlight group.
+            fg = "NONE",              -- The gui style to use for the fg highlight group.
+            bg = "NONE",              -- The gui style to use for the bg highlight group.
         },
-        merge_keywords = true, -- when true, custom keywords will be merged with the defaults
+        merge_keywords = true,        -- when true, custom keywords will be merged with the defaults
         highlight = {
-            multiline = true, -- enable multine todo comments
-            multiline_pattern = "^.", -- lua pattern to match the next multiline from the start of the matched keyword
-            multiline_context = 10, -- extra lines that will be re-evaluated when changing a line
-            before = "fg", -- "fg" or "bg" or empty
-            keyword = "fg", -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
-            after = "fg", -- "fg" or "bg" or empty
-            comments_only = true, -- uses treesitter to match keywords in comments only
-            max_line_len = 400, -- ignore lines longer than this
+            multiline = false,         -- enable multine todo comments
+            before = "empty",            -- "fg" or "bg" or empty
+            keyword = "fg",           -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
+            after = "empty",             -- "fg" or "bg" or empty
+            comments_only = true,     -- uses treesitter to match keywords in comments only
+            max_line_len = 400,       -- ignore lines longer than this
         },
+        colors = {
+            hack = {"Function"},
+        }
     }
 }
