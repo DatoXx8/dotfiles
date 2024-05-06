@@ -31,7 +31,7 @@ vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.wo.signcolumn = 'yes'
-vim.o.updatetime = 10
+vim.o.updatetime = 1000
 -- vim.o.guicursor = "n-v-c-sm-i-ci-ve-o-cr-r:block"
 vim.g.netrw_sort_sequence =
 "[\\/]$,\\<core\\%(\\.\\d\\+\\)\\=\\>,\\~\\=\\*$,*,\\.o$,\\.obj$,\\.info$,\\.swp$,\\.bak$,\\~$"
@@ -39,7 +39,7 @@ vim.o.timeoutlen = 250
 vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 16
 vim.diagnostic.config({ update_on_insert = true })
 Cmd = nil
 vim.keymap.set('n', '<F2>', function()
@@ -70,99 +70,97 @@ vim.filetype.add({
     }
 })
 
-if not vim.g.vscode then -- I have to use vscode for opencl :^(
-    local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-    if not vim.loop.fs_stat(lazypath) then
-        vim.fn.system {
-            'git',
-            'clone',
-            '--filter=blob:none',
-            'https://github.com/folke/lazy.nvim.git',
-            '--branch=stable', -- latest stable release
-            lazypath,
-        }
-    end
-    vim.opt.rtp:prepend(lazypath)
-    require('lazy').setup({
-        {
-            import = 'custom.plugins'
-        },
-    }, {})
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system {
+        'git',
+        'clone',
+        '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git',
+        '--branch=stable',     -- latest stable release
+        lazypath,
+    }
+end
+vim.opt.rtp:prepend(lazypath)
+require('lazy').setup({
+    {
+        import = 'custom.plugins'
+    },
+}, {})
 
-    require('telescope').setup {
-        defaults = {
-            mappings = {
-                i = {
-                    ['<C-u>'] = false,
-                    ['<C-d>'] = false,
-                },
+require('telescope').setup {
+    defaults = {
+        mappings = {
+            i = {
+                ['<C-u>'] = false,
+                ['<C-d>'] = false,
             },
         },
-    }
+    },
+}
 
-    pcall(require('telescope').load_extension, 'fzf')
+pcall(require('telescope').load_extension, 'fzf')
 
-    vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Call LSP formating' })
+vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { desc = 'Call LSP formating' })
 
-    vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'Find recently opened files' })
-    -- vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
-    vim.keymap.set('n', '<leader>/', function()
-        require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-            winblend = 10,
-            previewer = false,
-        })
-    end, { desc = 'Fuzzily search in current buffer' })
-
-    vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = 'Search Files' })
-    vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = 'Search Help' })
-    vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = 'Search current Word' })
-    vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = 'Search by Grep' })
-    vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = 'Search Diagnostics' })
-    vim.keymap.set('n', '<leader>sm', require('telescope.builtin').marks, { desc = 'Find existing buffers' })
-
-    -- Diagnostic keymaps
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-    vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-    vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-    vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename' })
-    vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
-
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
-    vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Goto References' })
-    vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { desc = 'Goto Implementation' })
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { desc = 'Type Definition' })
-    vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { desc = 'Document Symbols' })
-    vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols,
-        { desc = 'Workspace Symbols' })
-
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
-    vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help)
-
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Goto Declaration' })
-    -- vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { desc = 'Workspace Add Folder' })
-    -- vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { desc = 'Workspace Remove Folder' })
-    -- vim.keymap.set('n', '<leader>wl', function()
-    --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    -- end, { desc = 'Workspace List Folders' })
-
-    require('neodev').setup()
-
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-    -- pyright, rust_analyzer, lua_ls, clangd
-    require('lspconfig').lua_ls.setup({ capabilities = capabilities })
-    require('lspconfig').clangd.setup({
-        capabilities = capabilities,
-        settings = {}
+vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'Find recently opened files' })
+-- vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
+vim.keymap.set('n', '<leader>/', function()
+    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+        winblend = 10,
+        previewer = true,
     })
-    require('lspconfig').rust_analyzer.setup({
-        capabilities = capabilities,
-    })
-    require('lspconfig').pyright.setup({ capabilities = capabilities })
-    require('lspconfig').zls.setup({
-        capabilities = capabilities,
-    })
-end
+end, { desc = 'Fuzzily search in current buffer' })
+
+vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = 'Search Files' })
+vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = 'Search Help' })
+vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = 'Search current Word' })
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = 'Search by Grep' })
+vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = 'Search Diagnostics' })
+vim.keymap.set('n', '<leader>sm', require('telescope.builtin').marks, { desc = 'Find existing buffers' })
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename' })
+vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, { desc = 'Code Action' })
+
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
+vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = 'Goto References' })
+vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { desc = 'Goto Implementation' })
+vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { desc = 'Type Definition' })
+vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { desc = 'Document Symbols' })
+vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols,
+    { desc = 'Workspace Symbols' })
+
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help)
+
+vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Goto Declaration' })
+-- vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { desc = 'Workspace Add Folder' })
+-- vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { desc = 'Workspace Remove Folder' })
+-- vim.keymap.set('n', '<leader>wl', function()
+--     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+-- end, { desc = 'Workspace List Folders' })
+
+require('neodev').setup()
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+-- pyright, rust_analyzer, lua_ls, clangd
+require('lspconfig').lua_ls.setup({ capabilities = capabilities })
+require('lspconfig').clangd.setup({
+    capabilities = capabilities,
+    settings = {}
+})
+require('lspconfig').rust_analyzer.setup({
+    capabilities = capabilities,
+})
+require('lspconfig').pyright.setup({ capabilities = capabilities })
+require('lspconfig').zls.setup({
+    capabilities = capabilities,
+})
