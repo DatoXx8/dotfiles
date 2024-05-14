@@ -48,14 +48,13 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec wezterm 
+bindsym $mod+Return exec alacritty 
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec --no-startup-id dmenu_run
-bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'HackNerdFontMono-10' -p 'dmenu%'"
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -137,48 +136,46 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
+set $base           #191724
+set $surface        #1f1d2e
+set $overlay        #26233a
+set $muted          #6e6a86
+set $subtle         #908caa
+set $text           #e0def4
+set $love           #eb6f92
+set $gold           #f6c177
+set $rose           #ebbcba
+set $pine           #31748f
+set $foam           #9ccfd8
+set $iris           #c4a7e7
+set $highlightlow   #21202e
+set $highlightmed   #403d52
+set $highlighthigh  #524f67
 
-bindsym $mod+r mode "resize"
-
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
-
+bindsym $mod+d exec "dmenu_run -nf '$text' -nb '$surface' -sb '$overlay' -sf '$love' -fn 'HackNerdFontMono-10' -p 'dmenu%'"
 
 # Teming border and Windows --------------
-# target                 title    bg       text  indicator border
-# client.focused           $overlay $overlay $text $base     $base 
-# client.focused           $base    $base    $gold $gold     $base 
-# client.focused_inactive  $base    $base    $text $base     $base
-# client.unfocused         $base    $base    $text $base     $base
-# client.urgent            $base    $base    $text $rose     $rose
-# client.placeholder       $base    $base    $text $base     $base
-# client.background        $base
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
- client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
- client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
- client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
- client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
- client.background       #F8F8F2
+# target                 title     bg    text   indicator  border
+client.focused           $base     $base $rose  $subtle    $surface
+client.focused_inactive  $base     $base $text  $subtle    $surface
+client.unfocused         $base     $base $text  $overlay   $overlay
+client.urgent            $base     $base $text  $love      $love
+client.placeholder       $base     $base $text  $overlay   $overlay
+client.background        $base
 
 bar {
     status_command i3status
-   colors {
-     background #282A36
-     statusline #F8F8F2
-     separator  #44475A
-   
-     focused_workspace  #44475A #44475A #F8F8F2
-     active_workspace   #282A36 #44475A #F8F8F2
-     inactive_workspace #282A36 #282A36 #BFBFBF
-     urgent_workspace   #FF5555 #FF5555 #F8F8F2
-     binding_mode       #FF5555 #FF5555 #F8F8F2
-   }
+    colors {
+        background $base
+        statusline $text
+        separator  $gold
+        
+        focused_workspace  $base $base $text
+        active_workspace   $overlay $overlay $text
+        inactive_workspace $overlay $overlay $text 
+        urgent_workspace   $foam $foam $text
+        binding_mode       $love $love $text
+    }
 }
 
 exec --no-startup-id nitrogen --restore

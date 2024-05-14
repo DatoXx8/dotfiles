@@ -24,9 +24,9 @@ return {
                 },
                 sections = {
                     lualine_a = { 'mode' },
-                    lualine_b = { 'branch', 'diagnostics' },
+                    lualine_b = { 'branch' },
                     -- lualine_c = {'filename','progress', 'location' },
-                    lualine_c = { 'filename' },
+                    lualine_c = { 'filename', 'diagnostics' },
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
