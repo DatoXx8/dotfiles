@@ -47,14 +47,9 @@ floating_modifier $mod
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
-# start a terminal
 bindsym $mod+Return exec alacritty 
 
-# kill focused window
 bindsym $mod+Shift+q kill
-
-# start dmenu (a program launcher)
-# bindsym $mod+d exec --no-startup-id dmenu_run
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -156,7 +151,7 @@ bindsym $mod+d exec "dmenu_run -nf '$text' -nb '$surface' -sb '$overlay' -sf '$l
 
 # Teming border and Windows --------------
 # target                 title     bg    text   indicator  border
-client.focused           $base     $base $rose  $subtle    $surface
+client.focused           $base     $base $rose  $pine      $surface
 client.focused_inactive  $base     $base $text  $subtle    $surface
 client.unfocused         $base     $base $text  $overlay   $overlay
 client.urgent            $base     $base $text  $love      $love
