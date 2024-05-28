@@ -26,6 +26,7 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.wo.number = true
 vim.wo.relativenumber = true
+-- vim.wo.numberwidth = 5 
 vim.o.breakindent = true
 vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or capital in search
@@ -77,7 +78,7 @@ if not vim.loop.fs_stat(lazypath) then
         'clone',
         '--filter=blob:none',
         'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable',     -- latest stable release
+        '--branch=stable', -- latest stable release
         lazypath,
     }
 end
