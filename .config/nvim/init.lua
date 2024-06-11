@@ -36,7 +36,7 @@ vim.o.updatetime = 1000
 -- vim.o.guicursor = "n-v-c-sm-i-ci-ve-o-cr-r:block"
 vim.g.netrw_sort_sequence =
 "[\\/]$,\\<core\\%(\\.\\d\\+\\)\\=\\>,\\~\\=\\*$,*,\\.o$,\\.obj$,\\.info$,\\.swp$,\\.bak$,\\~$"
-vim.o.timeoutlen = 250
+vim.o.timeoutlen = 500
 vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
