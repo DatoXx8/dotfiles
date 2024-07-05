@@ -6,8 +6,6 @@ vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Move to the next and re-center' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Move to the previous and re-center' })
 vim.keymap.set('v', '<leader>a', '<C-a>gvj',
     { desc = 'In visual mode increment the section and go down. Kinda janky but it works' })
-vim.keymap.set('n', '<leader>hs', vim.cmd.sp, { desc = 'Split the window horizontally' })
-vim.keymap.set('n', '<leader>vs', vim.cmd.vsp, { desc = 'Split the window vertically' })
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { desc = 'Move selected text down and automatically re-indent' })
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { desc = 'Move selected text up and automatically re-indent' })
 vim.keymap.set('n', '<leader>rw', vim.cmd.Ex, { desc = 'Open up NetRW' })
@@ -18,30 +16,32 @@ vim.keymap.set('n', '<leader><space>', ":vs<CR>:terminal<CR>i", { desc = 'Open d
 vim.keymap.set('t', '<C-a>', '<C-\\><C-n>', { desc = 'Go into normal mode' })
 vim.keymap.set('t', '<C-q>', '<C-\\><C-n>:q<CR>', { desc = 'Close da term' })
 vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = 'Close da thing' })
+vim.keymap.set('n', '<leader>x', function()
+    vim.cmd [[!chmod +x %]]
+end, { desc = 'Make da thing executable' })
 vim.o.hlsearch = false
 vim.o.mouse = nil
 vim.o.expandtab = true
 vim.o.showmode = false
 vim.o.tabstop = 4
+vim.o.wrap = false
 vim.o.shiftwidth = 4
 vim.wo.number = true
 vim.wo.relativenumber = true
--- vim.wo.numberwidth = 5 
+vim.wo.numberwidth = 5
 vim.o.breakindent = true
 vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.wo.signcolumn = 'yes'
-vim.o.updatetime = 1000
 -- vim.o.guicursor = "n-v-c-sm-i-ci-ve-o-cr-r:block"
 vim.g.netrw_sort_sequence =
 "[\\/]$,\\<core\\%(\\.\\d\\+\\)\\=\\>,\\~\\=\\*$,*,\\.o$,\\.obj$,\\.info$,\\.swp$,\\.bak$,\\~$"
-vim.o.timeoutlen = 500
 vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.opt.scrolloff = 16
-vim.diagnostic.config({ update_on_insert = true })
+-- vim.diagnostic.config({ update_on_insert = true })
 Cmd = nil
 vim.keymap.set('n', '<F2>', function()
     if Cmd ~= nil then
@@ -57,19 +57,6 @@ vim.keymap.set('n', '<F3>', function()
 end)
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-    callback = function()
-        vim.highlight.on_yank()
-    end,
-    group = highlight_group,
-    pattern = '*',
-})
-vim.filetype.add({
-    extension = {
-        cl = 'c'
-    }
-})
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
